@@ -11,6 +11,7 @@ public class ConversorNumerosTest {
 	private ConversorNumeros conversor;
 	private Integer numeroParaConverter;
 	private String resultado;
+	private String erroRecebido;
 	
 	@Before
 	public void prepararTestes() {
@@ -24,6 +25,11 @@ public class ConversorNumerosTest {
 
 	@Quando("^realizo a conversão$")
 	public void realizo_a_conversão() throws Throwable {
+	  try {
+	    resultado = conversor.converte(numeroParaConverter);
+    } catch (Exception e) {
+      erroRecebido = e.getMessage();
+    }
 		resultado = conversor.converte(numeroParaConverter);
 	}
 
@@ -32,4 +38,8 @@ public class ConversorNumerosTest {
 		assertEquals(resultadoEsperado, resultado);
 	}
 	
+	@Entao("^devo receber a mensagem \"(.*?)\"$")
+	public void devo_receber_a_mensagem(String erroEsperado) throws Throwable {
+	  assertEquals(erroEsperado, erroRecebido);
+	}
 }
